@@ -34,11 +34,40 @@ public class EnemyController : MonoBehaviour
 
     private GameObject attackTarget;
 
+    public float lookAtTime;
+
+    private float remainLookAtTime;
+
+    [Header("Patrol State")]
+    public float patrolRange;
+
+    private Vector3 wayPoint;
+
+    /// <summary>
+    /// 起始坐标
+    /// </summary>
+    private Vector3 guardPosition;
+
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         defaultSpeed = agent.speed;
+        guardPosition = transform.position;
+        remainLookAtTime = lookAtTime;
+    }
+
+    void Start()
+    {
+        if (isGuard)
+        {
+            enemyStates = EnemyStates.Gaurd;
+        }
+        else
+        {
+            enemyStates = EnemyStates.Patrol;
+            GetNewWayPoint();
+        }
     }
 
     void Update()
@@ -67,7 +96,23 @@ public class EnemyController : MonoBehaviour
             case EnemyStates.Gaurd:
                 break;
             case EnemyStates.Patrol:
-                
+                isChase=false;
+                agent.speed = defaultSpeed * 0.5f;
+                // 如果已经接近导航点则停止行走并设定一个新的导航点
+                if(Vector3.Distance(wayPoint,transform.position) <= agent.stoppingDistance)
+                {
+                    isWalk = false;
+                    if (remainLookAtTime > 0)
+                    {
+                        remainLookAtTime -= Time.deltaTime;
+                    }
+                    else GetNewWayPoint();
+                }
+                else
+                {
+                    isWalk = true;
+                    agent.destination = wayPoint;
+                }
                 break;
             case EnemyStates.Chase:
                 // TODO:追player
@@ -80,7 +125,19 @@ public class EnemyController : MonoBehaviour
                 {
                     // TODO:拉脱回到上一个状态
                     isFollow = false;
-                    agent.destination = transform.position;
+                    if (remainLookAtTime > 0)
+                    {
+                        agent.destination = transform.position;
+                        remainLookAtTime -= Time.deltaTime;
+                    }
+                    else if (isGuard)
+                    {
+                        enemyStates = EnemyStates.Gaurd;
+                    }
+                    else
+                    {
+                        enemyStates = EnemyStates.Patrol;
+                    }
                 }
                 else
                 {
@@ -115,6 +172,31 @@ public class EnemyController : MonoBehaviour
 
         attackTarget = null;
         return false;
+    }
+
+    /// <summary>
+    /// 设定一个新的导航点
+    /// </summary>
+    void GetNewWayPoint()
+    {
+        remainLookAtTime = lookAtTime;
+        float randomX = Random.Range(-patrolRange, patrolRange);
+        float randomZ = Random.Range(-patrolRange, patrolRange);
+
+        // 在初始坐标的周围巡逻
+        Vector3 randomPoint = new Vector3(guardPosition.x + randomX, transform.position.y, guardPosition.z + randomZ);
+        // 判断randomPoint是否为1，也就是walkable
+        wayPoint = NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, patrolRange, 1) ? hit.position : transform.position;
+    }
+
+    /// <summary>
+    /// 选中当前对象时绘制辅助线
+    /// </summary>
+    private void OnDrawGizmosSelected()
+    {
+        // 以当前对象为圆心，sightRadius为半径绘制
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, sightRadius);
     }
 }
 
