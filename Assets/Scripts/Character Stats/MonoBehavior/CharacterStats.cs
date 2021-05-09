@@ -4,7 +4,21 @@ using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
+    /// <summary>
+    /// 人物基本属性
+    /// </summary>
     public CharacterData characterData;
+
+    /// <summary>
+    /// 人物攻击属性
+    /// </summary>
+    public AttackData attackData;
+
+    /// <summary>
+    /// 是否暴击了
+    /// </summary>
+    [HideInInspector]
+    public bool isCritical;
 
     #region 读取characterData里面内容
     public int MaxHealth

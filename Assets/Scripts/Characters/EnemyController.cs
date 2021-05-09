@@ -15,9 +15,14 @@ public class EnemyController : MonoBehaviour
 
     private bool isChase;
 
+    /// <summary>
+    /// 是否追赶玩家
+    /// </summary>
     private bool isFollow;
 
     private EnemyStates enemyStates;
+
+    private CharacterStats characterStats;
 
     [Header("Basic Settings")]
     public float sightRadius;
@@ -37,6 +42,11 @@ public class EnemyController : MonoBehaviour
     public float lookAtTime;
 
     private float remainLookAtTime;
+    
+    /// <summary>
+    /// 攻击计时器(为0时才可以进行下一次攻击)
+    /// </summary>
+    private float attackTimer;
 
     [Header("Patrol State")]
     public float patrolRange;
@@ -52,6 +62,7 @@ public class EnemyController : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        characterStats = GetComponent<CharacterStats>();
         defaultSpeed = agent.speed;
         guardPosition = transform.position;
         remainLookAtTime = lookAtTime;
@@ -74,6 +85,7 @@ public class EnemyController : MonoBehaviour
     {
         SwitchStates();
         SwitchAnimation();
+        attackTimer -= Time.deltaTime;
     }
 
     void SwitchAnimation()
@@ -81,6 +93,7 @@ public class EnemyController : MonoBehaviour
         animator.SetBool("Walk",isWalk);
         animator.SetBool("Chase", isChase);
         animator.SetBool("Follow", isFollow);
+        animator.SetBool("Critical",characterStats.isCritical);
     }
 
     void SwitchStates()
@@ -115,15 +128,12 @@ public class EnemyController : MonoBehaviour
                 }
                 break;
             case EnemyStates.Chase:
-                // TODO:追player
-
                 isWalk = false;
                 isChase = true;
 
                 agent.speed = defaultSpeed;
                 if (!FoundPlayer())
                 {
-                    // TODO:拉脱回到上一个状态
                     isFollow = false;
                     if (remainLookAtTime > 0)
                     {
@@ -142,16 +152,48 @@ public class EnemyController : MonoBehaviour
                 else
                 {
                     isFollow = true;
+                    agent.isStopped = false;
                     // 找到玩家时，设定怪物导航目标
                     agent.destination = attackTarget.transform.position;
                 }
 
                 // TODO:在攻击范围内则攻击
+                if (TargetInAttackRange() || TargetInSkillRange())
+                {
+                    isFollow = false;
+                    agent.isStopped = true;
+                    // 若小于0
+                    if (attackTimer < 0)
+                    {
+                        // 重置定时器
+                        attackTimer = characterStats.attackData.coolDown;
+
+                        // 暴击判断
+                        characterStats.isCritical = Random.value < characterStats.attackData.criticalChange;
+
+                        Attack();
+                    }
+                }
+
 
                 // TODO:配合攻击动画
                 break;
             case EnemyStates.Dead:
                 break;
+        }
+    }
+
+    void Attack()
+    {
+        transform.LookAt(attackTarget.transform);
+        if (TargetInAttackRange())
+        {
+            animator.SetTrigger("Attack");
+        }
+
+        if (TargetInSkillRange())
+        {
+            animator.SetTrigger("Skill");
         }
     }
 
@@ -171,6 +213,36 @@ public class EnemyController : MonoBehaviour
         }
 
         attackTarget = null;
+        return false;
+    }
+
+    /// <summary>
+    /// 目标是否在攻击范围内
+    /// </summary>
+    /// <returns></returns>
+    bool TargetInAttackRange()
+    {
+        if (attackTarget != null)
+        {
+            return Vector3.Distance(attackTarget.transform.position, transform.position) <=
+                   characterStats.attackData.attackRange;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// 目标是否在技能范围内
+    /// </summary>
+    /// <returns></returns>
+    bool TargetInSkillRange()
+    {
+        if (attackTarget != null)
+        {
+            return Vector3.Distance(attackTarget.transform.position, transform.position) <=
+                   characterStats.attackData.skillRange;
+        }
+
         return false;
     }
 

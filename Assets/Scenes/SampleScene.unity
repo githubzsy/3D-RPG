@@ -67712,7 +67712,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.14220113, y: 0.000000030704015, z: -0.0000000044109707, w: 0.9898378}
+  m_LocalRotation: {x: 0.14220113, y: -0.000000030704015, z: 0.0000000044109707, w: 0.9898378}
   m_LocalPosition: {x: 0, y: 6, z: -14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -67953,6 +67953,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterData: {fileID: 11400000, guid: 7c6b303ed32aa9943a2813e6c326cc12, type: 2}
+  attackData: {fileID: 11400000, guid: a424036613a8aa243b67be4b2f7c4ade, type: 2}
+  isCritical: 0
 --- !u!1001 &984257411
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -69380,7 +69382,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1122843024}
-  m_LocalRotation: {x: 0.12422062, y: -0.00000001707311, z: 0.0000000021373872, w: 0.9922547}
+  m_LocalRotation: {x: 0.12422062, y: 0.000000017073113, z: -0.0000000021373876, w: 0.9922547}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -78685,7 +78687,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2023736028}
-  m_LocalRotation: {x: 0.14220111, y: 0.000000008515764, z: -0.0000000012233834, w: 0.9898378}
+  m_LocalRotation: {x: 0.14220111, y: -0.000000008515764, z: 0.0000000012233834, w: 0.9898378}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -79920,3 +79922,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterData: {fileID: 11400000, guid: cec3ca98e1b354f42a1f300727b55f4e, type: 2}
+  attackData: {fileID: 11400000, guid: 1ca760a9e3c40bf4d9af832726866037, type: 2}
+  isCritical: 0

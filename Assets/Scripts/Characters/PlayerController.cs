@@ -11,6 +11,11 @@ public class PlayerController : MonoBehaviour
 
     private GameObject attackTarget;
 
+    /// <summary>
+    /// 人物数值
+    /// </summary>
+    private CharacterStats characterStats;
+
     private float lastAttackTime;
 
     private Coroutine c;
@@ -19,6 +24,7 @@ public class PlayerController : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        characterStats = GetComponent<CharacterStats>();
     }
 
     void Start()
@@ -43,7 +49,8 @@ public class PlayerController : MonoBehaviour
     IEnumerator MoveToAttackTarget()
     {
         transform.LookAt(attackTarget.transform);
-        while (Vector3.Distance(attackTarget.transform.position, transform.position) > 1)
+        // 若距离大于人物攻击距离
+        while (Vector3.Distance(attackTarget.transform.position, transform.position) > characterStats.attackData.attackRange)
         {
             agent.destination = attackTarget.transform.position;
             // 进行下一次判断
