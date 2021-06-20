@@ -65,6 +65,12 @@ public class CharacterStats : MonoBehaviour
         // 保证最小血量不会到负数
         CurrentHealth = Mathf.Max(CurrentHealth - damage, 0);
 
+        // 被暴击时出现被击动作
+        if (attacker.isCritical)
+        {
+            this.GetComponent<Animator>().SetTrigger("GetHit");
+        }
+
         // TODO: 配置UI
         // TODO: 经验值增加
     }

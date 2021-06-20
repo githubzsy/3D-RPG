@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
 
     private float lastAttackTime;
 
+    private bool isDead;
+
     private Coroutine c;
 
     void Awake()
@@ -73,6 +75,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        isDead = characterStats.CurrentHealth == 0;
         SwitchAnimation();
         lastAttackTime -= Time.deltaTime;
     }
@@ -90,6 +93,7 @@ public class PlayerController : MonoBehaviour
     private void SwitchAnimation()
     {
         animator.SetFloat("Speed", agent.velocity.sqrMagnitude);
+        animator.SetBool("Death",isDead);
     }
 
     void Hit()
