@@ -157,7 +157,7 @@ public class EnemyController : MonoBehaviour
                     agent.destination = attackTarget.transform.position;
                 }
 
-                // TODO:在攻击范围内则攻击
+                // 在攻击范围内则攻击
                 if (TargetInAttackRange() || TargetInSkillRange())
                 {
                     isFollow = false;
@@ -169,7 +169,7 @@ public class EnemyController : MonoBehaviour
                         attackTimer = characterStats.attackData.coolDown;
 
                         // 暴击判断
-                        characterStats.isCritical = Random.value < characterStats.attackData.criticalChange;
+                        characterStats.isCritical = Random.value < characterStats.attackData.criticalChance;
 
                         Attack();
                     }
@@ -269,6 +269,15 @@ public class EnemyController : MonoBehaviour
         // 以当前对象为圆心，sightRadius为半径绘制
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, sightRadius);
+    }
+
+    void Hit()
+    {
+        if (attackTarget != null)
+        {
+            var targetStats = attackTarget.GetComponent<CharacterStats>();
+            targetStats.TakeDamage(characterStats);
+        }
     }
 }
 

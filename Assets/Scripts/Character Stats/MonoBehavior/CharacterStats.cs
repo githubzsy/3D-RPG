@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CharacterStats : MonoBehaviour
 {
@@ -48,5 +50,42 @@ public class CharacterStats : MonoBehaviour
 
     #endregion
 
+    #region 人物战斗数值
+    /// <summary>
+    /// 承受伤害
+    /// </summary>
+    /// <param name="attacker">攻击者</param>
+    public void TakeDamage(CharacterStats attacker)
+    {
+        // 最低伤害为0
+        int damage = Mathf.Max(attacker.CurrentDamage() - this.CurrentDefense,0);
 
+        Debug.Log($"{attacker}造成了{damage}点伤害");
+
+        // 保证最小血量不会到负数
+        CurrentHealth = Mathf.Max(CurrentHealth - damage, 0);
+
+        // TODO: 配置UI
+        // TODO: 经验值增加
+    }
+
+    /// <summary>
+    /// 计算实时伤害值
+    /// </summary>
+    /// <returns></returns>
+    private int CurrentDamage()
+    {
+        float coreDamage = Random.Range(attackData.minDamage, attackData.maxDamage);
+
+        // 计算暴击伤害
+        if (isCritical)
+        {
+            Debug.Log($"暴击了");
+            coreDamage *= attackData.criticalMultiplier;
+        }
+
+        return (int) coreDamage;
+    }
+
+    #endregion
 }

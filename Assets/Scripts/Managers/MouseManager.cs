@@ -69,7 +69,6 @@ public class MouseManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && hit.collider != null)
         {
-            Debug.Log("µ„ª˜¡À Û±Í");
             if (hit.collider.gameObject.CompareTag("Ground"))
             {
                 OnMouseClicked?.Invoke(hit.point);

@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
         if (obj != null)
         {
             attackTarget = obj;
+            characterStats.isCritical = Random.value < characterStats.attackData.criticalChance;
              c = StartCoroutine(MoveToAttackTarget());
         }
     }
@@ -61,9 +62,10 @@ public class PlayerController : MonoBehaviour
         // 攻击
         if (lastAttackTime < 0)
         {
+            animator.SetBool("Critical", characterStats.isCritical);
             animator.SetTrigger("Attack");
             // 重置攻击冷却时间
-            lastAttackTime = 0.5f;
+            lastAttackTime = characterStats.attackData.coolDown;
         }
     }
 
@@ -77,7 +79,6 @@ public class PlayerController : MonoBehaviour
 
     public void MoveToTarget(Vector3 target)
     {
-        Debug.Log("朝目标移动");
         if (c != null)
         {
             StopCoroutine(c);
@@ -89,5 +90,11 @@ public class PlayerController : MonoBehaviour
     private void SwitchAnimation()
     {
         animator.SetFloat("Speed", agent.velocity.sqrMagnitude);
+    }
+
+    void Hit()
+    {
+        var targetStats = attackTarget.GetComponent<CharacterStats>();
+        targetStats.TakeDamage(characterStats);
     }
 }

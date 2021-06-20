@@ -23,5 +23,5 @@ public class AttackData : ScriptableObject
     /// <summary>
     /// ±©»÷ÂÊ
     /// </summary>
-    public float criticalChange;
+    public float criticalChance;
 }
