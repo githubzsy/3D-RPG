@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour,IEndGameObserver
 {
     private NavMeshAgent agent;
 
@@ -23,6 +23,8 @@ public class EnemyController : MonoBehaviour
     private bool isFollow;
 
     private bool isDead;
+
+    private bool playerDead;
 
     private EnemyStates enemyStates;
 
@@ -96,9 +98,12 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         isDead = characterStats.CurrentHealth == 0;
-        SwitchStates();
-        SwitchAnimation();
-        attackTimer -= Time.deltaTime;
+        if (!playerDead)
+        {
+            SwitchStates();
+            SwitchAnimation();
+            attackTimer -= Time.deltaTime;
+        }
     }
 
     void SwitchAnimation()
@@ -313,6 +318,29 @@ public class EnemyController : MonoBehaviour
             var targetStats = attackTarget.GetComponent<CharacterStats>();
             targetStats.TakeDamage(characterStats);
         }
+    }
+
+    /// <summary>
+    /// PlayerËÀµÄÊ±ºò
+    /// </summary>
+    public void EndNotify()
+    {
+        playerDead = true;
+        animator.SetBool("Win",true);
+        isChase = false;
+        isWalk = false;
+        attackTarget = null;
+
+    }
+
+    void OnEnable()
+    {
+        GameManager.Instance.AddObserver(this);
+    }
+
+    void OnDisable()
+    {
+        GameManager.Instance.RemoveObserver(this);
     }
 }
 

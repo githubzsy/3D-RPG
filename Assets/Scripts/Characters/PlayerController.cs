@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     {
         MouseManager.Instance.OnMouseClicked += MoveToTarget;
         MouseManager.Instance.OnEnemyClicked += EventAttack;
+        GameManager.Instance.RegisterPlayer(characterStats);
     }
 
     /// <summary>
@@ -51,6 +52,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator MoveToAttackTarget()
     {
+        if (isDead) yield break;
         transform.LookAt(attackTarget.transform);
         // Èô¾àÀë´óÓÚÈËÎï¹¥»÷¾àÀë
         while (Vector3.Distance(attackTarget.transform.position, transform.position) > characterStats.attackData.attackRange)
@@ -76,18 +78,29 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         isDead = characterStats.CurrentHealth == 0;
+        if (isDead)
+        {
+            agent.enabled = false;
+            attackTarget = null;
+            GameManager.Instance.NotifyObservers();
+        }
+
         SwitchAnimation();
         lastAttackTime -= Time.deltaTime;
+
     }
 
     public void MoveToTarget(Vector3 target)
     {
+        if (isDead) return;
         if (c != null)
         {
             StopCoroutine(c);
         }
+
         agent.isStopped = false;
         agent.destination = target;
+
     }
 
     private void SwitchAnimation()

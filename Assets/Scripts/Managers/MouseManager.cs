@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MouseManager : MonoBehaviour
+public class MouseManager : Singleton<MouseManager>
 {
-    public static MouseManager Instance;
-
     /// <summary>
     ///  Û±ÍÕº∆¨
     /// </summary>
@@ -24,16 +22,6 @@ public class MouseManager : MonoBehaviour
     public event Action<GameObject> OnEnemyClicked;
 
     RaycastHit hit;
-
-    void Awake()
-    {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-        }
-
-        Instance = this;
-    }
 
     void Update()
     {
@@ -60,8 +48,6 @@ public class MouseManager : MonoBehaviour
                     break;
             }
         }
-
-
     }
 
 
