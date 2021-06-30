@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(CharacterStats))]
 public class EnemyController : MonoBehaviour,IEndGameObserver
 {
     private NavMeshAgent agent;
@@ -93,6 +94,9 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             enemyStates = EnemyStates.Patrol;
             GetNewWayPoint();
         }
+
+        // FIXME:³¡¾°ÇÐ»»ºóÐÞ¸Äµô
+        GameManager.Instance.AddObserver(this);
     }
 
     void Update()
@@ -333,13 +337,14 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
     }
 
-    void OnEnable()
-    {
-        GameManager.Instance.AddObserver(this);
-    }
+    //void OnEnable()
+    //{
+    //    GameManager.Instance.AddObserver(this);
+    //}
 
     void OnDisable()
     {
+        if (!GameManager.IsInitialized) return;
         GameManager.Instance.RemoveObserver(this);
     }
 }

@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     /// <param name="obj"></param>
     private void EventAttack(GameObject obj)
     {
+        if (isDead) return;
         if (obj != null)
         {
             attackTarget = obj;

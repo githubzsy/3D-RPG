@@ -7,9 +7,14 @@ using Random = UnityEngine.Random;
 public class CharacterStats : MonoBehaviour
 {
     /// <summary>
+    /// 人物属性模板
+    /// </summary>
+    public CharacterData templateData;
+
+    /// <summary>
     /// 人物基本属性
     /// </summary>
-    public CharacterData characterData;
+    private CharacterData characterData;
 
     /// <summary>
     /// 人物攻击属性
@@ -94,4 +99,13 @@ public class CharacterStats : MonoBehaviour
     }
 
     #endregion
+
+    void Awake()
+    {
+        // 初始化属性模板
+        if (templateData != null)
+        {
+            characterData = Instantiate(templateData);
+        }
+    }
 }
