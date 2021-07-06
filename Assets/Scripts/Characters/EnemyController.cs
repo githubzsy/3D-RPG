@@ -44,7 +44,10 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     /// </summary>
     private float defaultSpeed;
 
-    private GameObject attackTarget;
+    /// <summary>
+    /// 当前攻击目标
+    /// </summary>
+    protected GameObject attackTarget;
 
     public float lookAtTime;
 
@@ -221,7 +224,9 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                 // 关闭碰撞体，这样玩家就不能点击了
                 collider.enabled = false;
                 // 关闭导航
-                agent.enabled = false;
+                // agent.enabled = false;
+                // 将半径设置为0，修复调用动画时找不到agent的bug
+                agent.radius = 0;
                 Destroy(gameObject,2f);
                 break;
         }
