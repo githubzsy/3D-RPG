@@ -65,8 +65,6 @@ public class CharacterStats : MonoBehaviour
         // 最低伤害为0
         int damage = Mathf.Max(attacker.CurrentDamage() - this.CurrentDefense,0);
 
-        Debug.Log($"{attacker}造成了{damage}点伤害");
-
         // 保证最小血量不会到负数
         CurrentHealth = Mathf.Max(CurrentHealth - damage, 0);
 
@@ -91,7 +89,6 @@ public class CharacterStats : MonoBehaviour
         // 计算暴击伤害
         if (isCritical)
         {
-            Debug.Log($"暴击了");
             coreDamage *= attackData.criticalMultiplier;
         }
 

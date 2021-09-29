@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ec1a9e47d535994cb8d304d8d1ad403, type: 3}
-  m_Name: Player BaseAttack
+  m_Name: Golem Attack
   m_EditorClassIdentifier: 
-  attackRange: 2.3
-  skillRange: 0
-  coolDown: 0.7
-  minDamage: 8
-  maxDamage: 10
+  attackRange: 3.5
+  skillRange: 10
+  coolDown: 3.5
+  minDamage: 5
+  maxDamage: 8
   criticalMultiplier: 1.5
-  criticalChance: 1
+  criticalChance: 0.5

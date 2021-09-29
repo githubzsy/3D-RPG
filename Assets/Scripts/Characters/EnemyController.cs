@@ -8,7 +8,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(CharacterStats))]
 public class EnemyController : MonoBehaviour,IEndGameObserver
 {
-    private NavMeshAgent agent;
+    protected NavMeshAgent agent;
 
     private Animator animator;
 
@@ -29,7 +29,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
     private EnemyStates enemyStates;
 
-    private CharacterStats characterStats;
+    protected CharacterStats characterStats;
 
     [Header("Basic Settings")]
     public float sightRadius;
@@ -322,7 +322,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
     void Hit()
     {
-        if (attackTarget != null)
+        if (attackTarget != null && !agent.isStopped)
         {
             var targetStats = attackTarget.GetComponent<CharacterStats>();
             targetStats.TakeDamage(characterStats);

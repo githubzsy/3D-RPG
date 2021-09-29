@@ -20,6 +20,11 @@ public class PlayerController : MonoBehaviour
 
     private bool isDead;
 
+    /// <summary>
+    /// 原始的停止距离
+    /// </summary>
+    private float stopDistance;
+
     private Coroutine c;
 
     void Awake()
@@ -27,6 +32,7 @@ public class PlayerController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         characterStats = GetComponent<CharacterStats>();
+        stopDistance = agent.stoppingDistance;
     }
 
     void Start()
@@ -47,13 +53,19 @@ public class PlayerController : MonoBehaviour
         {
             attackTarget = obj;
             characterStats.isCritical = Random.value < characterStats.attackData.criticalChance;
-             c = StartCoroutine(MoveToAttackTarget());
+            if (c != null)
+            {
+                StopCoroutine(c);
+            }
+            c = StartCoroutine(MoveToAttackTarget());
         }
     }
 
     IEnumerator MoveToAttackTarget()
     {
         if (isDead) yield break;
+        // 修改攻击距离与人物攻击距离相同
+        agent.stoppingDistance = characterStats.attackData.attackRange;
         transform.LookAt(attackTarget.transform);
         // 若距离大于人物攻击距离
         while (Vector3.Distance(attackTarget.transform.position, transform.position) > characterStats.attackData.attackRange)
@@ -90,7 +102,11 @@ public class PlayerController : MonoBehaviour
         lastAttackTime -= Time.deltaTime;
 
     }
-
+    
+    /// <summary>
+    /// 移动到目标
+    /// </summary>
+    /// <param name="target"></param>
     public void MoveToTarget(Vector3 target)
     {
         if (isDead) return;
@@ -98,7 +114,8 @@ public class PlayerController : MonoBehaviour
         {
             StopCoroutine(c);
         }
-
+        // 将停止距离恢复为默认值
+        agent.stoppingDistance = stopDistance;
         agent.isStopped = false;
         agent.destination = target;
 
