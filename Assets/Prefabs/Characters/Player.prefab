@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &219484625069034038
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7994088017398832249}
+  m_Layer: 6
+  m_Name: HealthBarPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7994088017398832249
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 219484625069034038}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4180255973096310843}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4180255973096281121
 GameObject:
   m_ObjectHideFlags: 0
@@ -884,6 +914,7 @@ GameObject:
   - component: {fileID: 4180255973086767079}
   - component: {fileID: 2786698998682251187}
   - component: {fileID: 2786698998682251184}
+  - component: {fileID: 905616997577172024}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -904,6 +935,7 @@ Transform:
   m_Children:
   - {fileID: 4180255973096311177}
   - {fileID: 4180255973096310887}
+  - {fileID: 7994088017398832249}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -133.702, z: 0}
@@ -960,6 +992,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c09db86eb2ebf94ab85bdaf98dd5a03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &905616997577172024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4180255973096281179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7136b5fceec228344884f5f8acfa335b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HealthUiPrefab: {fileID: 7200556533950023604, guid: 254fe0a623f39d449bae80a31421e68a, type: 3}
+  BarPoint: {fileID: 7994088017398832249}
+  AlwaysVisible: 1
+  VisibleTime: 0
 --- !u!1 &4180255973096281181
 GameObject:
   m_ObjectHideFlags: 0

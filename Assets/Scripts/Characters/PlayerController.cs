@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
 
     private Animator animator;
 
+    /// <summary>
+    /// 攻击目标
+    /// </summary>
     private GameObject attackTarget;
 
     /// <summary>
@@ -51,6 +54,7 @@ public class PlayerController : MonoBehaviour
         if (isDead) return;
         if (obj != null)
         {
+            agent.isStopped = false;
             attackTarget = obj;
             characterStats.isCritical = Random.value < characterStats.attackData.criticalChance;
             if (c != null)
@@ -129,7 +133,20 @@ public class PlayerController : MonoBehaviour
 
     void Hit()
     {
-        var targetStats = attackTarget.GetComponent<CharacterStats>();
-        targetStats.TakeDamage(characterStats);
+        if (attackTarget.CompareTag("Attackable"))
+        {
+            var rock = attackTarget.GetComponent<Rock>();
+            if (rock != null)
+            {
+                rock.State = Rock.RockStates.HitEnemy;
+                // 给石头一个面向前的力
+                rock.GetComponent<Rigidbody>().AddForce(transform.forward * characterStats.attackData.maxDamage, ForceMode.Impulse);
+            }
+        }
+        else
+        {
+            var targetStats = attackTarget.GetComponent<CharacterStats>();
+            targetStats.TakeDamage(characterStats);
+        }
     }
 }

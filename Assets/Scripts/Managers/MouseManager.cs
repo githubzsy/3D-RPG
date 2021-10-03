@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -44,6 +45,7 @@ public class MouseManager : Singleton<MouseManager>
                     Cursor.SetCursor(target,new Vector2(16,16),CursorMode.Auto);
                     break;
                 case "Enemy":
+                case "Attackable":
                     Cursor.SetCursor(attack, new Vector2(16, 16), CursorMode.Auto);
                     break;
             }
@@ -60,7 +62,7 @@ public class MouseManager : Singleton<MouseManager>
                 OnMouseClicked?.Invoke(hit.point);
             }
 
-            if (hit.collider.gameObject.CompareTag("Enemy"))
+            if (new[] { "Enemy", "Attackable" }.Contains(hit.collider.gameObject.tag))
             {
                 OnEnemyClicked?.Invoke(hit.collider.gameObject);
             }

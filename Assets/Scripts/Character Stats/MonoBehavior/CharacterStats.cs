@@ -7,6 +7,11 @@ using Random = UnityEngine.Random;
 public class CharacterStats : MonoBehaviour
 {
     /// <summary>
+    /// 被攻击时的事件，前一个参数是当前血量，后一个参数是总血量
+    /// </summary>
+    public event Action<int, int> UpdateHealthBarOnTakeDamage;
+
+    /// <summary>
     /// 人物属性模板
     /// </summary>
     public CharacterData templateData;
@@ -64,18 +69,26 @@ public class CharacterStats : MonoBehaviour
     {
         // 最低伤害为0
         int damage = Mathf.Max(attacker.CurrentDamage() - this.CurrentDefense,0);
+        TakeDamage(damage, attacker.isCritical);
+    }
 
+    /// <summary>
+    /// 承受伤害
+    /// </summary>
+    /// <param name="damage">伤害值</param>
+    /// <param name="isCritical">是否为暴击伤害</param>
+    public void TakeDamage(int damage,bool isCritical)
+    {
         // 保证最小血量不会到负数
         CurrentHealth = Mathf.Max(CurrentHealth - damage, 0);
 
         // 被暴击时出现被击动作
-        if (attacker.isCritical)
+        if (isCritical)
         {
             this.GetComponent<Animator>().SetTrigger("GetHit");
         }
 
-        // TODO: 配置UI
-        // TODO: 经验值增加
+        UpdateHealthBarOnTakeDamage?.Invoke(CurrentHealth, MaxHealth);
     }
 
     /// <summary>
