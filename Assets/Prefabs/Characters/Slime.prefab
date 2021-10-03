@@ -171,7 +171,7 @@ MonoBehaviour:
   HealthUiPrefab: {fileID: 7200556533950023604, guid: 254fe0a623f39d449bae80a31421e68a, type: 3}
   BarPoint: {fileID: 8996023135737780701}
   AlwaysVisible: 0
-  VisibleTime: 0
+  VisibleTime: 3
 --- !u!1 &6409975315794782721
 GameObject:
   m_ObjectHideFlags: 0
