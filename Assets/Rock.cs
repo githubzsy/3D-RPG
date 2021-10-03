@@ -72,7 +72,7 @@ public class Rock : MonoBehaviour
                     collision.gameObject.GetComponent<NavMeshAgent>().isStopped = true;
                     collision.gameObject.GetComponent<NavMeshAgent>().velocity = velocity;
                     collision.gameObject.GetComponent<Animator>().SetTrigger("Dizzy");
-                    collision.gameObject.GetComponent<CharacterStats>().TakeDamage(10, false);
+                    collision.gameObject.GetComponent<CharacterStats>().TakeDamage(10, false,null);
                     State = RockStates.HitNothing;
                 }
                 break;
@@ -82,7 +82,8 @@ public class Rock : MonoBehaviour
                 {
                     collision.gameObject.GetComponent<NavMeshAgent>().velocity = velocity / 2;
                     collision.gameObject.GetComponent<Animator>().SetTrigger("GetHit");
-                    collision.gameObject.GetComponent<CharacterStats>().TakeDamage(30, false);
+                    var player = FindObjectOfType<PlayerController>().GetComponent<CharacterStats>();
+                    collision.gameObject.GetComponent<CharacterStats>().TakeDamage(30, false, player);
                     State = RockStates.HitNothing;
                 }
                 break;

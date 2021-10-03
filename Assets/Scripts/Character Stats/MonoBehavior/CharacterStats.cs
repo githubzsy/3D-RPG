@@ -69,7 +69,7 @@ public class CharacterStats : MonoBehaviour
     {
         // 最低伤害为0
         int damage = Mathf.Max(attacker.CurrentDamage() - this.CurrentDefense,0);
-        TakeDamage(damage, attacker.isCritical);
+        TakeDamage(damage, attacker.isCritical,attacker);
     }
 
     /// <summary>
@@ -77,7 +77,7 @@ public class CharacterStats : MonoBehaviour
     /// </summary>
     /// <param name="damage">伤害值</param>
     /// <param name="isCritical">是否为暴击伤害</param>
-    public void TakeDamage(int damage,bool isCritical)
+    public void TakeDamage(int damage,bool isCritical,CharacterStats attacker)
     {
         // 保证最小血量不会到负数
         CurrentHealth = Mathf.Max(CurrentHealth - damage, 0);
@@ -89,6 +89,12 @@ public class CharacterStats : MonoBehaviour
         }
 
         UpdateHealthBarOnTakeDamage?.Invoke(CurrentHealth, MaxHealth);
+
+        // 给攻击者计算经验
+        if (CurrentHealth <= 0 && attacker!=null)
+        {
+            attacker.characterData.UpdateExp(characterData.killPoint);
+        }
     }
 
     /// <summary>

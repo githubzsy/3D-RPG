@@ -35,8 +35,13 @@ public class HealthBarUi : MonoBehaviour
     /// <summary>
     /// 是否永久可见
     /// </summary>
+    [Tooltip("血条是否永久可见")]
     public bool AlwaysVisible;
 
+    /// <summary>
+    /// 血条不永久可见时，展示多长时间
+    /// </summary>
+    [Tooltip("血条不永久可见时，展示多长时间")]
     public float VisibleTime;
 
     CharacterStats characterStats;
