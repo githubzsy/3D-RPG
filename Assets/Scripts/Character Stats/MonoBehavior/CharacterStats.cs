@@ -17,9 +17,10 @@ public class CharacterStats : MonoBehaviour
     public CharacterData templateData;
 
     /// <summary>
-    /// 人物基本属性
+    /// 人物当前基本属性
     /// </summary>
-    private CharacterData characterData;
+    [HideInInspector]
+    public CharacterData characterData;
 
     /// <summary>
     /// 人物攻击属性
@@ -93,7 +94,11 @@ public class CharacterStats : MonoBehaviour
         // 给攻击者计算经验
         if (CurrentHealth <= 0 && attacker!=null)
         {
-            attacker.characterData.UpdateExp(characterData.killPoint);
+            if (attacker.characterData.UpdateExp(characterData.killPoint))
+            {
+                attacker.UpdateHealthBarOnTakeDamage?.Invoke(attacker.CurrentHealth, attacker.MaxHealth);
+            }
+
         }
     }
 

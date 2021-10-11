@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBarUi : MonoBehaviour
+public class HealthBarUI : MonoBehaviour
 {
     /// <summary>
     /// 血量条组件

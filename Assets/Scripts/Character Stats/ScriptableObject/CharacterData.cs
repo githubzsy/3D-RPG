@@ -65,17 +65,22 @@ public class CharacterData : ScriptableObject
     [Tooltip("当前升级需要经验值倍率")]
     public float levelBuff = 1.2f;
     #endregion
-    public void UpdateExp(int point)
+    public bool UpdateExp(int point)
     {
         currentExp += point;
-        if (currentExp >= baseExp)
+        bool levelUp = false;
+        while (currentExp >= baseExp)
         {
+            levelUp = true;
             LevelUp();
         }
+        return levelUp;
     }
 
     private void LevelUp()
     {
+        // 经验值清0
+        currentExp = currentExp - baseExp;
         baseExp = (int)(baseExp * levelBuff);
         maxHealth += 50;
         currentHealth = maxHealth;
